@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تحليل المشاعر باستخدام Watson AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>تحليل المشاعر باستخدام IBM Watson</h2>
+        <form id="sentimentForm">
+            <textarea name="text" placeholder="أدخل النص هنا..." required></textarea>
+            <button type="submit">تحليل المشاعر</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('sentimentForm');
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = form.text.value;
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ text })
+            });
+            const result = await response.json();
+            document.getElementById('result').innerHTML = `
+                <h3>النتيجة:</h3>
+                <pre>${JSON.stringify(result, null, 2)}</pre>
+            `;
+        });
+    </script>
+</body>
+</html>
